@@ -18,6 +18,24 @@ library(tidyverse)
 
 ``` r
 library(knitr)
+library(lubridate)
+```
+
+    ## 
+    ## Attaching package: 'lubridate'
+    ## 
+    ## The following objects are masked from 'package:base':
+    ## 
+    ##     date, intersect, setdiff, union
+
+``` r
+Date1 <- as.Date("2018-09-26")
+Date2 <- as.Date("2018-10-02")
+Date3 <- as.Date("2018-10-21")
+
+Time1 <- "01:00"
+Time2 <- "13:00"
+Time3 <- "11:00"
 ```
 
 <br>
@@ -53,6 +71,38 @@ exercise in order to get credit.**
     ## 1     1   2.1 apple 
     ## 2     2   3.2 orange
 
+## Tribble
+
+``` r
+tribble(
+  ~a, ~b, ~c,
+  1, 2.1, "apple",
+  2, 3.2, "orange"
+)
+```
+
+    ## # A tibble: 2 × 3
+    ##       a     b c     
+    ##   <dbl> <dbl> <chr> 
+    ## 1     1   2.1 apple 
+    ## 2     2   3.2 orange
+
+## Tibble
+
+``` r
+tibble(
+  a = c(1,2), 
+  b = c(2.1,3.2),
+  c = c("apple","orange")
+)
+```
+
+    ## # A tibble: 2 × 3
+    ##       a     b c     
+    ##   <dbl> <dbl> <chr> 
+    ## 1     1   2.1 apple 
+    ## 2     2   3.2 orange
+
 <br>
 
 #### 1.2 Import `https://raw.githubusercontent.com/nt246/NTRES-6100-data-science/master/datasets/dataset2.txt` into R. Change the column names into “Name”, “Weight”, “Price”.
@@ -64,9 +114,39 @@ exercise in order to get credit.**
     ## 2 orange      2   4.9
     ## 3 durian     10  19.9
 
+``` r
+tibble(
+  Name = c("apple", "orange", "durian"), 
+  Weight = c(1,2,10), 
+  Price = c(2.9, 4.9, 19.9)
+)
+```
+
+    ## # A tibble: 3 × 3
+    ##   Name   Weight Price
+    ##   <chr>   <dbl> <dbl>
+    ## 1 apple       1   2.9
+    ## 2 orange      2   4.9
+    ## 3 durian     10  19.9
+
 <br>
 
 #### 1.3 Import `https://raw.githubusercontent.com/nt246/NTRES-6100-data-science/master/datasets/dataset3.txt` into R. Watch out for the first few lines, missing values, separators, quotation marks, and deliminaters.
+
+    ## # A tibble: 3 × 3
+    ##   Name   Weight Price
+    ##   <chr>   <dbl> <dbl>
+    ## 1 apple       1   2.9
+    ## 2 orange      2  NA  
+    ## 3 durian     NA  19.9
+
+``` r
+tibble(
+  Name = c("apple", "orange", "durian"), 
+  Weight = c(1,2,NA), 
+  Price = c(2.9, NA, 19.9)
+)
+```
 
     ## # A tibble: 3 × 3
     ##   Name   Weight Price
@@ -100,6 +180,31 @@ exercise in order to get credit.**
     ##   <chr>  <date>            <time>
     ## 1 apple  2018-09-26        01:00 
     ## 2 orange 2018-10-02        13:00 
+    ## 3 durian 2018-10-21        11:00
+
+``` r
+Date1 <- as.Date("2018-09-26")
+Date2 <- as.Date("2018-10-02")
+Date3 <- as.Date("2018-10-21")
+
+Time1 <- "01:00"
+Time2 <- "13:00"
+Time3 <- "11:00"
+```
+
+``` r
+tibble(
+  Name = c("apple", "orange", "durian"), 
+  `Expiration Date` = c(Date1, Date2, Date3),
+  Time = c(Time1, Time2, Time3)
+)
+```
+
+    ## # A tibble: 3 × 3
+    ##   Name   `Expiration Date` Time 
+    ##   <chr>  <date>            <chr>
+    ## 1 apple  2018-09-26        01:00
+    ## 2 orange 2018-10-02        13:00
     ## 3 durian 2018-10-21        11:00
 
 <br>
@@ -227,64 +332,3 @@ helpful.*
 ![](assignment_6_files/figure-gfm/unnamed-chunk-14-1.png)<!-- -->
 
 <br>
-
-## Exercise 3. Camera data (OPTIONAL)
-
-This dataset contains information on 1038 camera models. It was obtained
-from the following website:
-<https://perso.telecom-paristech.fr/eagan/class/igr204/>
-
-<br>
-
-#### 3.1 Split brand names and model names
-
-- Import
-  `https://raw.githubusercontent.com/nt246/NTRES-6100-data-science/master/datasets/camera.csv`
-  to R.
-
-- You will see that the `Model` columns contains both the brand names
-  and model names of cameras. Split this column into two, one with brand
-  name, and the other with model name, as shown below.
-
-- Print the first 6 rows of the new data frame with `kable()`.
-
-*Hint: check the merge argument in `separate()`*
-
-<br>
-
-| Brand | Model             | Release date | Max resolution | Low resolution | Effective pixels | Zoom wide (W) | Zoom tele (T) | Normal focus range | Macro focus range | Storage included | Weight (inc. batteries) | Dimensions | Price |
-|:------|:------------------|-------------:|---------------:|---------------:|-----------------:|--------------:|--------------:|-------------------:|------------------:|-----------------:|------------------------:|-----------:|------:|
-| Agfa  | ePhoto 1280       |         1997 |           1024 |            640 |                0 |            38 |           114 |                 70 |                40 |                4 |                     420 |         95 |   179 |
-| Agfa  | ePhoto 1680       |         1998 |           1280 |            640 |                1 |            38 |           114 |                 50 |                 0 |                4 |                     420 |        158 |   179 |
-| Agfa  | ePhoto CL18       |         2000 |            640 |              0 |                0 |            45 |            45 |                  0 |                 0 |                2 |                       0 |          0 |   179 |
-| Agfa  | ePhoto CL30       |         1999 |           1152 |            640 |                0 |            35 |            35 |                  0 |                 0 |                4 |                       0 |          0 |   269 |
-| Agfa  | ePhoto CL30 Clik! |         1999 |           1152 |            640 |                0 |            43 |            43 |                 50 |                 0 |               40 |                     300 |        128 |  1299 |
-| Agfa  | ePhoto CL45       |         2001 |           1600 |            640 |                1 |            51 |            51 |                 50 |                20 |                8 |                     270 |        119 |   179 |
-
-<br>
-
-#### 3.2 Split product line names and model names
-
-- Many model names start with a name for the product line, which is then
-  followed by a name for the particular model.
-
-- Select all Canon cameras, and further split the model names into
-  product line names (in this case, they are either “Powershot” or
-  “EOS”) and model names.
-
-- Show the first 6 lines of this new data frame with `kable()`.
-
-*Hint: notice that there are more than one possible separators.*
-
-<br>
-
-| Brand | Line      | Model | Release date | Max resolution | Low resolution | Effective pixels | Zoom wide (W) | Zoom tele (T) | Normal focus range | Macro focus range | Storage included | Weight (inc. batteries) | Dimensions | Price |
-|:------|:----------|:------|-------------:|---------------:|---------------:|-----------------:|--------------:|--------------:|-------------------:|------------------:|-----------------:|------------------------:|-----------:|------:|
-| Canon | PowerShot | 350   |         1997 |            640 |              0 |                0 |            42 |            42 |                 70 |                 3 |                2 |                     320 |         93 |   149 |
-| Canon | PowerShot | 600   |         1996 |            832 |            640 |                0 |            50 |            50 |                 40 |                10 |                1 |                     460 |        160 |   139 |
-| Canon | PowerShot | A10   |         2001 |           1280 |           1024 |                1 |            35 |           105 |                 76 |                16 |                8 |                     375 |        110 |   139 |
-| Canon | PowerShot | A100  |         2002 |           1280 |           1024 |                1 |            39 |            39 |                 20 |                 5 |                8 |                     225 |        110 |   139 |
-| Canon | PowerShot | A20   |         2001 |           1600 |           1024 |                1 |            35 |           105 |                 76 |                16 |                8 |                     375 |        110 |   139 |
-| Canon | PowerShot | A200  |         2002 |           1600 |           1024 |                1 |            39 |            39 |                 20 |                 5 |                8 |                     225 |        110 |   139 |
-
-<br> <br>
