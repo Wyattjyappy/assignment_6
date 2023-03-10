@@ -8,6 +8,7 @@ output: github_document
 library(tidyverse)
 library(knitr)
 library(lubridate)
+library(readr)
 
 Date1 <- as.Date("2018-09-26")
 Date2 <- as.Date("2018-10-02")
@@ -16,6 +17,14 @@ Date3 <- as.Date("2018-10-21")
 Time1 <- "01:00"
 Time2 <- "13:00"
 Time3 <- "11:00"
+
+dataset2 <- read_csv("https://raw.githubusercontent.com/nt246/NTRES-6100-data-science/master/datasets/dataset2.txt")
+
+dataset3 <- read_csv("https://raw.githubusercontent.com/nt246/NTRES-6100-data-science/master/datasets/dataset3.txt")
+
+dataset5 <- read_csv("https://raw.githubusercontent.com/nt246/NTRES-6100-data-science/master/datasets/dataset5.txt")
+
+X2015y_Weather_Station_notes <- read_csv("https://raw.githubusercontent.com/nt246/NTRES-6100-data-science/master/datasets/2015y_Weather_Station_notes.txt")
 
 ```
 
@@ -84,15 +93,18 @@ tibble(
     ## 3 durian     10  19.9
     
 ```{r}
-dataset1_2 <- dataset2
+dataset2 <- read_csv("https://raw.githubusercontent.com/nt246/NTRES-6100-data-science/master/datasets/dataset2.txt")
 ```
-    
 
 ```{r}
-dataset1_2 <- tibble(
+dataset2 <- tibble(
   Name = c("apple", "orange", "durian"), 
   Weight = c(1,2,10), 
-  Price = c(2.9, 4.9, 19.9))
+  Price = c(2.9, 4.9, 19.9)
+  )
+
+tibble(dataset2)
+
 ```
 
 <br>
@@ -107,16 +119,18 @@ dataset1_2 <- tibble(
     ## 3 durian     NA  19.9
  
 ```{r}
-datset1_3 <- dataset3
+dataset3 <- read_csv("https://raw.githubusercontent.com/nt246/NTRES-6100-data-science/master/datasets/dataset3.txt")
 ```
 
 
 ```{r}
-dataset1_3 <- tibble(
+dataset3 <- tibble(
   Name = c("apple", "orange", "durian"), 
   Weight = c(1,2,NA), 
   Price = c(2.9, NA, 19.9)
   )
+
+tibble(dataset3)
 ```
 
 <br>
@@ -151,7 +165,7 @@ dataset1_3 <- tibble(
     
 
 ```{r}
-dataset1_5 <- dataset5
+dataset5 <- read_csv("https://raw.githubusercontent.com/nt246/NTRES-6100-data-science/master/datasets/dataset5.txt")
 
 Date1 <- as.Date("2018-09-26")
 Date2 <- as.Date("2018-10-02")
@@ -163,11 +177,13 @@ Time3 <- "11:00"
 ``` 
     
 ```{r}
-dataset1_5 <- tibble(
+dataset5 <- tibble(
   Name = c("apple", "orange", "durian"), 
   `Expiration Date` = c(Date1, Date2, Date3),
   Time = c(Time1, Time2, Time3)
 )
+
+tibble(dataset5)
 ```
 
 <br>
@@ -185,7 +201,17 @@ Protection Administration, Executive Yuan, R.O.C. (Taiwan).
   contains descriptions of different variables collected by the station.
   
 ```{r}
+X2015y_Weather_Station_notes <- read_csv("https://raw.githubusercontent.com/nt246/NTRES-6100-data-science/master/datasets/2015y_Weather_Station_notes.txt")
+
 weather_station <- X2015y_Weather_Station_notes
+
+weather_station <- tibble(
+  Item = c("AMP_TEMP", "CO", "NO", "NO2", "NOx", "O3", "PM10", "PM2.5", "RAINFALL", "RH", "SO2", "WD_HR", "WIND_DIREC", "WIND_SPEED", "WS_HR"), 
+  Unit = c("Celsius", "ppm", "ppb", "ppb", "ppb", "ppb", "μg/m3", "μg/m3", "mm", "%", "ppb", "degress", "degrees", "m/sec", "m/sec"),
+ Description = c("Ambient air temperature", "Carbon monoxide", "Nitric oxide", "Nitrogen dioxide", "Nitrogen oxides", "Ozone", "Particulate matter with a diameter between 2.5 and 10 μm", "Particulate matter with a diameter of 2.5 μm or less", "Rainfall", "Rainfall", "Sulfur dioxide", "Wind direction (The average of hour)", "Wind direction (The average of last ten minutes per hour)", "Wind speed (The average of last ten minutes per hour)", "Wind speed (The average of hour)")
+)
+
+
 ```
 
 - Import it into R and print it in a table as shown below with
@@ -221,13 +247,6 @@ blank indicates no data
 knitr:: kable(weather_station, align = c("l", "l", "l"))
 ```
 
-```{r}
-weather_station <- tibble(
-  Item = c("AMP_TEMP", "CO", "NO", "NO2", "NOx", "O3", "PM10", "PM2.5", "RAINFALL", "RH", "SO2", "WD_HR", "WIND_DIREC", "WIND_SPEED", "WS_HR"), 
-  Unit = c("Celsius", "ppm", "ppb", "ppb", "ppb", "ppb", "μg/m3", "μg/m3", "mm", "%", "ppb", "degress", "degrees", "m/sec", "m/sec"),
- Description = c("Ambient air temperature", "Carbon monoxide", "Nitric oxide", "Nitrogen dioxide", "Nitrogen oxides", "Ozone", "Particulate matter with a diameter between 2.5 and 10 μm", "Particulate matter with a diameter of 2.5 μm or less", "Rainfall", "Rainfall", "Sulfur dioxide", "Wind direction (The average of hour)", "Wind direction (The average of last ten minutes per hour)", "Wind speed (The average of last ten minutes per hour)", "Wind speed (The average of hour)")
-)
-```
 <br>
 
 #### 2.2 Data tidying

@@ -29,6 +29,8 @@ library(lubridate)
     ##     date, intersect, setdiff, union
 
 ``` r
+library(readr)
+
 Date1 <- as.Date("2018-09-26")
 Date2 <- as.Date("2018-10-02")
 Date3 <- as.Date("2018-10-21")
@@ -36,7 +38,54 @@ Date3 <- as.Date("2018-10-21")
 Time1 <- "01:00"
 Time2 <- "13:00"
 Time3 <- "11:00"
+
+dataset2 <- read_csv("https://raw.githubusercontent.com/nt246/NTRES-6100-data-science/master/datasets/dataset2.txt")
 ```
+
+    ## Rows: 2 Columns: 3
+    ## ── Column specification ────────────────────────────────────────────────────────
+    ## Delimiter: ","
+    ## chr (1): apple
+    ## dbl (2): 1, 2.9
+    ## 
+    ## ℹ Use `spec()` to retrieve the full column specification for this data.
+    ## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+
+``` r
+dataset3 <- read_csv("https://raw.githubusercontent.com/nt246/NTRES-6100-data-science/master/datasets/dataset3.txt")
+```
+
+    ## Rows: 5 Columns: 1
+    ## ── Column specification ────────────────────────────────────────────────────────
+    ## Delimiter: ","
+    ## chr (1): Table of fruits
+    ## 
+    ## ℹ Use `spec()` to retrieve the full column specification for this data.
+    ## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+
+``` r
+dataset5 <- read_csv("https://raw.githubusercontent.com/nt246/NTRES-6100-data-science/master/datasets/dataset5.txt")
+```
+
+    ## Rows: 3 Columns: 1
+    ## ── Column specification ────────────────────────────────────────────────────────
+    ## Delimiter: ","
+    ## chr (1): Name Expiration Date Time
+    ## 
+    ## ℹ Use `spec()` to retrieve the full column specification for this data.
+    ## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+
+``` r
+X2015y_Weather_Station_notes <- read_csv("https://raw.githubusercontent.com/nt246/NTRES-6100-data-science/master/datasets/2015y_Weather_Station_notes.txt")
+```
+
+    ## Rows: 15 Columns: 1
+    ## ── Column specification ────────────────────────────────────────────────────────
+    ## Delimiter: ","
+    ## chr (1): Item-Unit-Description
+    ## 
+    ## ℹ Use `spec()` to retrieve the full column specification for this data.
+    ## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
 
 <br>
 
@@ -115,12 +164,34 @@ tibble(
     ## 3 durian     10  19.9
 
 ``` r
-dataset1_2 <- tibble(
+dataset2 <- read_csv("https://raw.githubusercontent.com/nt246/NTRES-6100-data-science/master/datasets/dataset2.txt")
+```
+
+    ## Rows: 2 Columns: 3
+    ## ── Column specification ────────────────────────────────────────────────────────
+    ## Delimiter: ","
+    ## chr (1): apple
+    ## dbl (2): 1, 2.9
+    ## 
+    ## ℹ Use `spec()` to retrieve the full column specification for this data.
+    ## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+
+``` r
+dataset2 <- tibble(
   Name = c("apple", "orange", "durian"), 
   Weight = c(1,2,10), 
   Price = c(2.9, 4.9, 19.9)
-)
+  )
+
+tibble(dataset2)
 ```
+
+    ## # A tibble: 3 × 3
+    ##   Name   Weight Price
+    ##   <chr>   <dbl> <dbl>
+    ## 1 apple       1   2.9
+    ## 2 orange      2   4.9
+    ## 3 durian     10  19.9
 
 <br>
 
@@ -134,12 +205,33 @@ dataset1_2 <- tibble(
     ## 3 durian     NA  19.9
 
 ``` r
+dataset3 <- read_csv("https://raw.githubusercontent.com/nt246/NTRES-6100-data-science/master/datasets/dataset3.txt")
+```
+
+    ## Rows: 5 Columns: 1
+    ## ── Column specification ────────────────────────────────────────────────────────
+    ## Delimiter: ","
+    ## chr (1): Table of fruits
+    ## 
+    ## ℹ Use `spec()` to retrieve the full column specification for this data.
+    ## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+
+``` r
 dataset3 <- tibble(
   Name = c("apple", "orange", "durian"), 
   Weight = c(1,2,NA), 
   Price = c(2.9, NA, 19.9)
   )
+
+tibble(dataset3)
 ```
+
+    ## # A tibble: 3 × 3
+    ##   Name   Weight Price
+    ##   <chr>   <dbl> <dbl>
+    ## 1 apple       1   2.9
+    ## 2 orange      2  NA  
+    ## 3 durian     NA  19.9
 
 <br>
 
@@ -169,6 +261,18 @@ dataset3 <- tibble(
     ## 3 durian 2018-10-21        11:00
 
 ``` r
+dataset5 <- read_csv("https://raw.githubusercontent.com/nt246/NTRES-6100-data-science/master/datasets/dataset5.txt")
+```
+
+    ## Rows: 3 Columns: 1
+    ## ── Column specification ────────────────────────────────────────────────────────
+    ## Delimiter: ","
+    ## chr (1): Name Expiration Date Time
+    ## 
+    ## ℹ Use `spec()` to retrieve the full column specification for this data.
+    ## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+
+``` r
 Date1 <- as.Date("2018-09-26")
 Date2 <- as.Date("2018-10-02")
 Date3 <- as.Date("2018-10-21")
@@ -179,11 +283,13 @@ Time3 <- "11:00"
 ```
 
 ``` r
-tibble(
+dataset5 <- tibble(
   Name = c("apple", "orange", "durian"), 
   `Expiration Date` = c(Date1, Date2, Date3),
   Time = c(Time1, Time2, Time3)
 )
+
+tibble(dataset5)
 ```
 
     ## # A tibble: 3 × 3
@@ -207,6 +313,28 @@ Protection Administration, Executive Yuan, R.O.C. (Taiwan).
   `https://raw.githubusercontent.com/nt246/NTRES-6100-data-science/master/datasets/2015y_Weather_Station_notes.txt`
   contains descriptions of different variables collected by the station.
 
+``` r
+X2015y_Weather_Station_notes <- read_csv("https://raw.githubusercontent.com/nt246/NTRES-6100-data-science/master/datasets/2015y_Weather_Station_notes.txt")
+```
+
+    ## Rows: 15 Columns: 1
+    ## ── Column specification ────────────────────────────────────────────────────────
+    ## Delimiter: ","
+    ## chr (1): Item-Unit-Description
+    ## 
+    ## ℹ Use `spec()` to retrieve the full column specification for this data.
+    ## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+
+``` r
+weather_station <- X2015y_Weather_Station_notes
+
+weather_station <- tibble(
+  Item = c("AMP_TEMP", "CO", "NO", "NO2", "NOx", "O3", "PM10", "PM2.5", "RAINFALL", "RH", "SO2", "WD_HR", "WIND_DIREC", "WIND_SPEED", "WS_HR"), 
+  Unit = c("Celsius", "ppm", "ppb", "ppb", "ppb", "ppb", "μg/m3", "μg/m3", "mm", "%", "ppb", "degress", "degrees", "m/sec", "m/sec"),
+ Description = c("Ambient air temperature", "Carbon monoxide", "Nitric oxide", "Nitrogen dioxide", "Nitrogen oxides", "Ozone", "Particulate matter with a diameter between 2.5 and 10 μm", "Particulate matter with a diameter of 2.5 μm or less", "Rainfall", "Rainfall", "Sulfur dioxide", "Wind direction (The average of hour)", "Wind direction (The average of last ten minutes per hour)", "Wind speed (The average of last ten minutes per hour)", "Wind speed (The average of hour)")
+)
+```
+
 - Import it into R and print it in a table as shown below with
   `kable()`.
 
@@ -223,7 +351,7 @@ Protection Administration, Executive Yuan, R.O.C. (Taiwan).
 | PM10       | μg/m3   | Particulate matter with a diameter between 2.5 and 10 μm  |
 | PM2.5      | μg/m3   | Particulate matter with a diameter of 2.5 μm or less      |
 | RAINFALL   | mm      | Rainfall                                                  |
-| RH         | %       | Relative humidity                                         |
+| RH         | %       | Rainfall                                                  |
 | SO2        | ppb     | Sulfur dioxide                                            |
 | WD_HR      | degress | Wind direction (The average of hour)                      |
 | WIND_DIREC | degress | Wind direction (The average of last ten minutes per hour) |
@@ -235,6 +363,28 @@ Protection Administration, Executive Yuan, R.O.C. (Taiwan).
 `x` indicates invalid value by human inspection  
 `NR` indicates no rainfall  
 blank indicates no data
+
+``` r
+knitr:: kable(weather_station, align = c("l", "l", "l"))
+```
+
+| Item       | Unit    | Description                                               |
+|:-----------|:--------|:----------------------------------------------------------|
+| AMP_TEMP   | Celsius | Ambient air temperature                                   |
+| CO         | ppm     | Carbon monoxide                                           |
+| NO         | ppb     | Nitric oxide                                              |
+| NO2        | ppb     | Nitrogen dioxide                                          |
+| NOx        | ppb     | Nitrogen oxides                                           |
+| O3         | ppb     | Ozone                                                     |
+| PM10       | μg/m3   | Particulate matter with a diameter between 2.5 and 10 μm  |
+| PM2.5      | μg/m3   | Particulate matter with a diameter of 2.5 μm or less      |
+| RAINFALL   | mm      | Rainfall                                                  |
+| RH         | %       | Rainfall                                                  |
+| SO2        | ppb     | Sulfur dioxide                                            |
+| WD_HR      | degress | Wind direction (The average of hour)                      |
+| WIND_DIREC | degrees | Wind direction (The average of last ten minutes per hour) |
+| WIND_SPEED | m/sec   | Wind speed (The average of last ten minutes per hour)     |
+| WS_HR      | m/sec   | Wind speed (The average of hour)                          |
 
 <br>
 
