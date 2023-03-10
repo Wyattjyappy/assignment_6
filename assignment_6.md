@@ -115,19 +115,12 @@ tibble(
     ## 3 durian     10  19.9
 
 ``` r
-tibble(
+dataset1_2 <- tibble(
   Name = c("apple", "orange", "durian"), 
   Weight = c(1,2,10), 
   Price = c(2.9, 4.9, 19.9)
 )
 ```
-
-    ## # A tibble: 3 × 3
-    ##   Name   Weight Price
-    ##   <chr>   <dbl> <dbl>
-    ## 1 apple       1   2.9
-    ## 2 orange      2   4.9
-    ## 3 durian     10  19.9
 
 <br>
 
@@ -141,19 +134,12 @@ tibble(
     ## 3 durian     NA  19.9
 
 ``` r
-tibble(
+dataset3 <- tibble(
   Name = c("apple", "orange", "durian"), 
   Weight = c(1,2,NA), 
   Price = c(2.9, NA, 19.9)
-)
+  )
 ```
-
-    ## # A tibble: 3 × 3
-    ##   Name   Weight Price
-    ##   <chr>   <dbl> <dbl>
-    ## 1 apple       1   2.9
-    ## 2 orange      2  NA  
-    ## 3 durian     NA  19.9
 
 <br>
 
