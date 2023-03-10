@@ -9,6 +9,8 @@ library(tidyverse)
 library(knitr)
 library(lubridate)
 library(readr)
+library(ggplot2)
+library(dplyr)
 
 Date1 <- as.Date("2018-09-26")
 Date2 <- as.Date("2018-10-02")
@@ -174,6 +176,8 @@ Date3 <- as.Date("2018-10-21")
 Time1 <- "01:00"
 Time2 <- "13:00"
 Time3 <- "11:00"
+
+
 ``` 
     
 ```{r}
@@ -199,20 +203,6 @@ Protection Administration, Executive Yuan, R.O.C. (Taiwan).
 - The text file
   `https://raw.githubusercontent.com/nt246/NTRES-6100-data-science/master/datasets/2015y_Weather_Station_notes.txt`
   contains descriptions of different variables collected by the station.
-  
-```{r}
-X2015y_Weather_Station_notes <- read_csv("https://raw.githubusercontent.com/nt246/NTRES-6100-data-science/master/datasets/2015y_Weather_Station_notes.txt")
-
-weather_station <- X2015y_Weather_Station_notes
-
-weather_station <- tibble(
-  Item = c("AMP_TEMP", "CO", "NO", "NO2", "NOx", "O3", "PM10", "PM2.5", "RAINFALL", "RH", "SO2", "WD_HR", "WIND_DIREC", "WIND_SPEED", "WS_HR"), 
-  Unit = c("Celsius", "ppm", "ppb", "ppb", "ppb", "ppb", "μg/m3", "μg/m3", "mm", "%", "ppb", "degress", "degrees", "m/sec", "m/sec"),
- Description = c("Ambient air temperature", "Carbon monoxide", "Nitric oxide", "Nitrogen dioxide", "Nitrogen oxides", "Ozone", "Particulate matter with a diameter between 2.5 and 10 μm", "Particulate matter with a diameter of 2.5 μm or less", "Rainfall", "Rainfall", "Sulfur dioxide", "Wind direction (The average of hour)", "Wind direction (The average of last ten minutes per hour)", "Wind speed (The average of last ten minutes per hour)", "Wind speed (The average of hour)")
-)
-
-
-```
 
 - Import it into R and print it in a table as shown below with
   `kable()`.
@@ -244,7 +234,10 @@ weather_station <- tibble(
 blank indicates no data
 
 ```{r}
-knitr:: kable(weather_station, align = c("l", "l", "l"))
+data6 <- read.table("https://raw.githubusercontent.com/nt246/NTRES-6100-data-science/master/datasets/2015y_Weather_Station_notes.txt", sep = "-")
+
+knitr:: kable(data6, "pipe", col.names=c("Item", "Unit", "Description"), align = c("l", "l", "l"))
+
 ```
 
 <br>
@@ -272,6 +265,8 @@ knitr:: kable(weather_station, align = c("l", "l", "l"))
 warning messages are not necessarily signs of trouble.*
 
 ```{r}
+weather <- read_csv("https://raw.githubusercontent.com/nt246/NTRES-6100-data-science/master/datasets/2015y_Weather_Station.csv") %>% 
+  head()
 ```
 
 <br>
@@ -290,6 +285,9 @@ Before cleaning:
 
 
 ```{r}
+weather %>% 
+  head()
+
 ```
 
 <br>
@@ -307,6 +305,41 @@ After cleaning:
     ## 6 2015-01-01 Cailiao 05:00        14  0.51   1.7    13    15    32   110
 
 ```{r}
+# Sample Data
+
+df <- tibble(
+  date = c("2015/01/01", "2015/01/01", "2015/01/01", "2015/01/01", "2015/01/01", "2015/01/01"),
+  station = c("Cailiao", "Cailiao", "Cailiao", "Cailiao", "Cailiao", "Cailiao"),
+  item = c("AMB_TEMP", "CO", "NO", "NO2", "NOx", "O3"),
+  `00` = c("16", "0.74", "1", "15", "16", "35"),
+  `01` = c("16", "0.7", "0.8", "13", "14", "36"),
+  `02` = c("15", "0.66", "1.1", "13", "14", "35"),
+  `03` = c("15", "0.61", "1.7", "12", "13", "34"),
+  `04` = c("15", "0.51", "2", "11", "13", "34"),
+  `05` = c("14", "0.51", "1.7", "13", "15", "32")
+)
+
+# Convert hour columns to long format
+data_long <- pivot_longer(df, cols = `00`:`05`, names_to = "hour", values_to = "value")
+
+# Extract hour from column names
+data_long <- separate(data_long, hour, c("hour", "minute"), sep = 1)
+
+# Convert data types
+data_long$date <- as.Date(data_long$date)
+data_long$hour <- as.numeric(data_long$hour)
+data_long$value <- as.numeric(data_long$value)
+
+# Spread item column to multiple columns
+data_wide <- pivot_wider(data_long, names_from = item, values_from = value)
+
+# Rename columns
+colnames(data_wide)[1:2] <- c("date", "station")
+colnames(data_wide)[4] <- "hour"
+
+data_wide
+  
+knitr:: kable(data_wide, align = c("l", "l", "r", "l", "l", "l", "l", "l", "l", "l"))
 ```
 
 <br>
@@ -316,6 +349,7 @@ After cleaning:
 ![](assignment_6_files/figure-gfm/unnamed-chunk-11-1.png)<!-- -->
 
 ```{r}
+
 ```
 
 <br>

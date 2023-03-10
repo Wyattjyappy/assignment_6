@@ -30,6 +30,8 @@ library(lubridate)
 
 ``` r
 library(readr)
+library(ggplot2)
+library(dplyr)
 
 Date1 <- as.Date("2018-09-26")
 Date2 <- as.Date("2018-10-02")
@@ -313,28 +315,6 @@ Protection Administration, Executive Yuan, R.O.C. (Taiwan).
   `https://raw.githubusercontent.com/nt246/NTRES-6100-data-science/master/datasets/2015y_Weather_Station_notes.txt`
   contains descriptions of different variables collected by the station.
 
-``` r
-X2015y_Weather_Station_notes <- read_csv("https://raw.githubusercontent.com/nt246/NTRES-6100-data-science/master/datasets/2015y_Weather_Station_notes.txt")
-```
-
-    ## Rows: 15 Columns: 1
-    ## ── Column specification ────────────────────────────────────────────────────────
-    ## Delimiter: ","
-    ## chr (1): Item-Unit-Description
-    ## 
-    ## ℹ Use `spec()` to retrieve the full column specification for this data.
-    ## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
-
-``` r
-weather_station <- X2015y_Weather_Station_notes
-
-weather_station <- tibble(
-  Item = c("AMP_TEMP", "CO", "NO", "NO2", "NOx", "O3", "PM10", "PM2.5", "RAINFALL", "RH", "SO2", "WD_HR", "WIND_DIREC", "WIND_SPEED", "WS_HR"), 
-  Unit = c("Celsius", "ppm", "ppb", "ppb", "ppb", "ppb", "μg/m3", "μg/m3", "mm", "%", "ppb", "degress", "degrees", "m/sec", "m/sec"),
- Description = c("Ambient air temperature", "Carbon monoxide", "Nitric oxide", "Nitrogen dioxide", "Nitrogen oxides", "Ozone", "Particulate matter with a diameter between 2.5 and 10 μm", "Particulate matter with a diameter of 2.5 μm or less", "Rainfall", "Rainfall", "Sulfur dioxide", "Wind direction (The average of hour)", "Wind direction (The average of last ten minutes per hour)", "Wind speed (The average of last ten minutes per hour)", "Wind speed (The average of hour)")
-)
-```
-
 - Import it into R and print it in a table as shown below with
   `kable()`.
 
@@ -365,12 +345,15 @@ weather_station <- tibble(
 blank indicates no data
 
 ``` r
-knitr:: kable(weather_station, align = c("l", "l", "l"))
+data6 <- read.table("https://raw.githubusercontent.com/nt246/NTRES-6100-data-science/master/datasets/2015y_Weather_Station_notes.txt", sep = "-")
+
+knitr:: kable(data6, "pipe", col.names=c("Item", "Unit", "Description"), align = c("l", "l", "l"))
 ```
 
 | Item       | Unit    | Description                                               |
 |:-----------|:--------|:----------------------------------------------------------|
-| AMP_TEMP   | Celsius | Ambient air temperature                                   |
+| Item       | Unit    | Description                                               |
+| AMB_TEMP   | Celsius | Ambient air temperature                                   |
 | CO         | ppm     | Carbon monoxide                                           |
 | NO         | ppb     | Nitric oxide                                              |
 | NO2        | ppb     | Nitrogen dioxide                                          |
@@ -379,10 +362,10 @@ knitr:: kable(weather_station, align = c("l", "l", "l"))
 | PM10       | μg/m3   | Particulate matter with a diameter between 2.5 and 10 μm  |
 | PM2.5      | μg/m3   | Particulate matter with a diameter of 2.5 μm or less      |
 | RAINFALL   | mm      | Rainfall                                                  |
-| RH         | %       | Rainfall                                                  |
+| RH         | %       | Relative humidity                                         |
 | SO2        | ppb     | Sulfur dioxide                                            |
 | WD_HR      | degress | Wind direction (The average of hour)                      |
-| WIND_DIREC | degrees | Wind direction (The average of last ten minutes per hour) |
+| WIND_DIREC | degress | Wind direction (The average of last ten minutes per hour) |
 | WIND_SPEED | m/sec   | Wind speed (The average of last ten minutes per hour)     |
 | WS_HR      | m/sec   | Wind speed (The average of hour)                          |
 
@@ -410,6 +393,26 @@ knitr:: kable(weather_station, align = c("l", "l", "l"))
 *Hints: you don’t have to perform these tasks in the given order; also,
 warning messages are not necessarily signs of trouble.*
 
+``` r
+weather <- read_csv("https://raw.githubusercontent.com/nt246/NTRES-6100-data-science/master/datasets/2015y_Weather_Station.csv") %>% 
+  head()
+```
+
+    ## Warning: One or more parsing issues, call `problems()` on your data frame for details,
+    ## e.g.:
+    ##   dat <- vroom(...)
+    ##   problems(dat)
+
+    ## Rows: 5460 Columns: 27
+    ## ── Column specification ────────────────────────────────────────────────────────
+    ## Delimiter: ","
+    ## chr  (15): station, item, 04, 08, 09, 10, 11, 12, 13, 14, 15, 16, 17, 18, 20
+    ## dbl  (11): 00, 01, 02, 03, 05, 06, 07, 19, 21, 22, 23
+    ## date  (1): date
+    ## 
+    ## ℹ Use `spec()` to retrieve the full column specification for this data.
+    ## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+
 <br>
 
 Before cleaning:
@@ -424,6 +427,24 @@ Before cleaning:
     ## 5 2015/01/01 Cailiao NOx      16    14    14    13    13    15    15   
     ## 6 2015/01/01 Cailiao O3       35    36    35    34    34    32    30
 
+``` r
+weather %>% 
+  head()
+```
+
+    ## # A tibble: 6 × 27
+    ##   date       station item   `00`  `01`  `02`  `03` `04`   `05`  `06`  `07` `08` 
+    ##   <date>     <chr>   <chr> <dbl> <dbl> <dbl> <dbl> <chr> <dbl> <dbl> <dbl> <chr>
+    ## 1 2015-01-01 Cailiao AMB_… 16     16   15    15    15    14    14     14   14   
+    ## 2 2015-01-01 Cailiao CO     0.74   0.7  0.66  0.61 0.51   0.51  0.51   0.6 0.62 
+    ## 3 2015-01-01 Cailiao NO     1      0.8  1.1   1.7  2      1.7   1.9    2.4 3.4  
+    ## 4 2015-01-01 Cailiao NO2   15     13   13    12    11    13    13     16   16   
+    ## 5 2015-01-01 Cailiao NOx   16     14   14    13    13    15    15     18   19   
+    ## 6 2015-01-01 Cailiao O3    35     36   35    34    34    32    30     26   26   
+    ## # … with 15 more variables: `09` <chr>, `10` <chr>, `11` <chr>, `12` <chr>,
+    ## #   `13` <chr>, `14` <chr>, `15` <chr>, `16` <chr>, `17` <chr>, `18` <chr>,
+    ## #   `19` <dbl>, `20` <chr>, `21` <dbl>, `22` <dbl>, `23` <dbl>
+
 <br>
 
 After cleaning:
@@ -437,6 +458,65 @@ After cleaning:
     ## 4 2015-01-01 Cailiao 03:00        15  0.61   1.7    12    13    34   142
     ## 5 2015-01-01 Cailiao 04:00        15  0.51   2      11    13    34   123
     ## 6 2015-01-01 Cailiao 05:00        14  0.51   1.7    13    15    32   110
+
+``` r
+# Sample Data
+
+df <- tibble(
+  date = c("2015/01/01", "2015/01/01", "2015/01/01", "2015/01/01", "2015/01/01", "2015/01/01"),
+  station = c("Cailiao", "Cailiao", "Cailiao", "Cailiao", "Cailiao", "Cailiao"),
+  item = c("AMB_TEMP", "CO", "NO", "NO2", "NOx", "O3"),
+  `00` = c("16", "0.74", "1", "15", "16", "35"),
+  `01` = c("16", "0.7", "0.8", "13", "14", "36"),
+  `02` = c("15", "0.66", "1.1", "13", "14", "35"),
+  `03` = c("15", "0.61", "1.7", "12", "13", "34"),
+  `04` = c("15", "0.51", "2", "11", "13", "34"),
+  `05` = c("14", "0.51", "1.7", "13", "15", "32")
+)
+
+# Convert hour columns to long format
+data_long <- pivot_longer(df, cols = `00`:`05`, names_to = "hour", values_to = "value")
+
+# Extract hour from column names
+data_long <- separate(data_long, hour, c("hour", "minute"), sep = 1)
+
+# Convert data types
+data_long$date <- as.Date(data_long$date)
+data_long$hour <- as.numeric(data_long$hour)
+data_long$value <- as.numeric(data_long$value)
+
+# Spread item column to multiple columns
+data_wide <- pivot_wider(data_long, names_from = item, values_from = value)
+
+# Rename columns
+colnames(data_wide)[1:2] <- c("date", "station")
+colnames(data_wide)[4] <- "hour"
+
+data_wide
+```
+
+    ## # A tibble: 6 × 10
+    ##   date       station  hour hour  AMB_TEMP    CO    NO   NO2   NOx    O3
+    ##   <date>     <chr>   <dbl> <chr>    <dbl> <dbl> <dbl> <dbl> <dbl> <dbl>
+    ## 1 2015-01-01 Cailiao     0 0           16  0.74   1      15    16    35
+    ## 2 2015-01-01 Cailiao     0 1           16  0.7    0.8    13    14    36
+    ## 3 2015-01-01 Cailiao     0 2           15  0.66   1.1    13    14    35
+    ## 4 2015-01-01 Cailiao     0 3           15  0.61   1.7    12    13    34
+    ## 5 2015-01-01 Cailiao     0 4           15  0.51   2      11    13    34
+    ## 6 2015-01-01 Cailiao     0 5           14  0.51   1.7    13    15    32
+
+``` r
+knitr:: kable(data_wide, align = c("l", "l", "r", "l", "l", "l", "l", "l", "l", "l"))
+```
+
+| date       | station | hour | hour | AMB_TEMP | CO   | NO  | NO2 | NOx | O3  |
+|:-----------|:--------|-----:|:-----|:---------|:-----|:----|:----|:----|:----|
+| 2015-01-01 | Cailiao |    0 | 0    | 16       | 0.74 | 1.0 | 15  | 16  | 35  |
+| 2015-01-01 | Cailiao |    0 | 1    | 16       | 0.70 | 0.8 | 13  | 14  | 36  |
+| 2015-01-01 | Cailiao |    0 | 2    | 15       | 0.66 | 1.1 | 13  | 14  | 35  |
+| 2015-01-01 | Cailiao |    0 | 3    | 15       | 0.61 | 1.7 | 12  | 13  | 34  |
+| 2015-01-01 | Cailiao |    0 | 4    | 15       | 0.51 | 2.0 | 11  | 13  | 34  |
+| 2015-01-01 | Cailiao |    0 | 5    | 14       | 0.51 | 1.7 | 13  | 15  | 32  |
 
 <br>
 
