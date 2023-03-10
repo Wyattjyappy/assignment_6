@@ -89,6 +89,28 @@ X2015y_Weather_Station_notes <- read_csv("https://raw.githubusercontent.com/nt24
     ## ℹ Use `spec()` to retrieve the full column specification for this data.
     ## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
 
+``` r
+data6 <- read.table("https://raw.githubusercontent.com/nt246/NTRES-6100-data-science/master/datasets/2015y_Weather_Station_notes.txt", sep = "-")
+
+weather <- read_csv("https://raw.githubusercontent.com/nt246/NTRES-6100-data-science/master/datasets/2015y_Weather_Station.csv") %>% 
+  head()
+```
+
+    ## Warning: One or more parsing issues, call `problems()` on your data frame for details,
+    ## e.g.:
+    ##   dat <- vroom(...)
+    ##   problems(dat)
+
+    ## Rows: 5460 Columns: 27
+    ## ── Column specification ────────────────────────────────────────────────────────
+    ## Delimiter: ","
+    ## chr  (15): station, item, 04, 08, 09, 10, 11, 12, 13, 14, 15, 16, 17, 18, 20
+    ## dbl  (11): 00, 01, 02, 03, 05, 06, 07, 19, 21, 22, 23
+    ## date  (1): date
+    ## 
+    ## ℹ Use `spec()` to retrieve the full column specification for this data.
+    ## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+
 <br>
 
 ## Exercise 1. Tibble and Data Import
@@ -346,7 +368,6 @@ blank indicates no data
 
 ``` r
 data6 <- read.table("https://raw.githubusercontent.com/nt246/NTRES-6100-data-science/master/datasets/2015y_Weather_Station_notes.txt", sep = "-")
-
 knitr:: kable(data6, "pipe", col.names=c("Item", "Unit", "Description"), align = c("l", "l", "l"))
 ```
 
@@ -394,8 +415,7 @@ knitr:: kable(data6, "pipe", col.names=c("Item", "Unit", "Description"), align =
 warning messages are not necessarily signs of trouble.*
 
 ``` r
-weather <- read_csv("https://raw.githubusercontent.com/nt246/NTRES-6100-data-science/master/datasets/2015y_Weather_Station.csv") %>% 
-  head()
+weather <- read_csv("https://raw.githubusercontent.com/nt246/NTRES-6100-data-science/master/datasets/2015y_Weather_Station.csv")
 ```
 
     ## Warning: One or more parsing issues, call `problems()` on your data frame for details,

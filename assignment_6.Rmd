@@ -28,6 +28,11 @@ dataset5 <- read_csv("https://raw.githubusercontent.com/nt246/NTRES-6100-data-sc
 
 X2015y_Weather_Station_notes <- read_csv("https://raw.githubusercontent.com/nt246/NTRES-6100-data-science/master/datasets/2015y_Weather_Station_notes.txt")
 
+data6 <- read.table("https://raw.githubusercontent.com/nt246/NTRES-6100-data-science/master/datasets/2015y_Weather_Station_notes.txt", sep = "-")
+
+weather <- read_csv("https://raw.githubusercontent.com/nt246/NTRES-6100-data-science/master/datasets/2015y_Weather_Station.csv") %>% 
+  head()
+
 ```
 
 <br>
@@ -235,8 +240,8 @@ blank indicates no data
 
 ```{r}
 data6 <- read.table("https://raw.githubusercontent.com/nt246/NTRES-6100-data-science/master/datasets/2015y_Weather_Station_notes.txt", sep = "-")
-
 knitr:: kable(data6, "pipe", col.names=c("Item", "Unit", "Description"), align = c("l", "l", "l"))
+
 
 ```
 
@@ -265,8 +270,7 @@ knitr:: kable(data6, "pipe", col.names=c("Item", "Unit", "Description"), align =
 warning messages are not necessarily signs of trouble.*
 
 ```{r}
-weather <- read_csv("https://raw.githubusercontent.com/nt246/NTRES-6100-data-science/master/datasets/2015y_Weather_Station.csv") %>% 
-  head()
+weather <- read_csv("https://raw.githubusercontent.com/nt246/NTRES-6100-data-science/master/datasets/2015y_Weather_Station.csv")
 ```
 
 <br>
